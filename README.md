@@ -8,7 +8,7 @@ This module utilizes systemless mount to mount the files, ensuring no modificati
 
 ## Requirements
 - Magisk v26.1+ / KernelSU v0.8.0+ / APatch 10568+
-- Android 11+ (API 30+) running MIUI/HyperOS
+- Android 11+ (API 30+) running MIUI / HyperOS
 
 > [!WARNING]
 > This module can also work on other root managers with mounting function or phones with similar file structure, feel free to test it yourself but no support will be provided and functionality is not guaranteed.
