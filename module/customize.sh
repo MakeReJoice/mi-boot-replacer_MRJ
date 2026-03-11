@@ -203,7 +203,7 @@ DEVICE_BRAND=$(getprop ro.product.brand | tr '[:upper:]' '[:lower:]')
 if [[ "$DEVICE_BRAND" != "xiaomi" && "$DEVICE_BRAND" != "redmi" && "$DEVICE_BRAND" != "poco" ]]; then
   ui_print "! Warning: Non-Xiaomi device detected"
   ui_print "- This module is designed for Xiaomi/Redmi/POCO devices"
-  ui_print "- Theoretically it should still work, but unexpected behavior may occur on other devices"
+  ui_print "- Theoretically it should still work, but keep in mind that unexpected behaviour may occur"
   ui_print "- If you think this is a mistake, please make sure you do not have any device spoofing related module enabled"
   ui_print "- Do you want to proceed with installation?"
   ui_print "  Volume [+]: Continue (At your own risk)"
@@ -218,6 +218,25 @@ if [[ "$DEVICE_BRAND" != "xiaomi" && "$DEVICE_BRAND" != "redmi" && "$DEVICE_BRAN
   fi
 fi
 
+# Check for downgrade as old versions have a different backup structure which may or may not cause issues?
+if [ -f "$OLD_MODULE_DIR/module.prop" ]; then
+  OLD_MODULE_VER_CODE=$(($(grep_prop versionCode "$OLD_MODULE_DIR/module.prop") + 0))
+  ui_print "- Installed version: $OLD_MODULE_VER_CODE"
+  ui_print "- Installing version: $MODULE_VER_CODE"
+
+  if [ "$MODULE_VER_CODE" -lt "$OLD_MODULE_VER_CODE" ]; then
+    ui_print "! Downgrade detected!"
+    ui_print "! Cannot install v$MODULE_VER_CODE over v$OLD_MODULE_VER_CODE"
+    ui_print "! Please uninstall the current version first or install a newer version"
+    abort "*********************************************"
+  elif [ "$MODULE_VER_CODE" -eq "$OLD_MODULE_VER_CODE" ]; then
+    ui_print "- Same version detected, reinstalling..."
+  else
+    ui_print "- Upgrading from v$OLD_MODULE_VER_CODE to v$MODULE_VER_CODE"
+  fi
+  ui_print "*********************************************"
+fi
+
 # Check for existing module installation and preserve user's theme
 if [ -d "$OLD_MODULE_DIR/system" ]; then
   ui_print "- Existing module installation detected"
@@ -227,7 +246,7 @@ if [ -d "$OLD_MODULE_DIR/system" ]; then
   ui_print "*********************************************"
   key_check
   if [[ "$keycheck" == "KEY_VOLUMEUP" ]]; then
-    ui_print "- Replacing with new theme"
+    ui_print "- Replacing with new theme..."
   else
     ui_print "- Preserving your current theme..."
     # Remove the new module's system directory and copy the old one
