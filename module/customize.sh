@@ -200,7 +200,7 @@ fi
 
 # Check if device is Xiaomi
 DEVICE_BRAND=$(getprop ro.product.brand | tr '[:upper:]' '[:lower:]')
-if [[ ! "$DEVICE_BRAND" =~ ^(xiaomi|redmi|poco)$ ]]; then
+if [[ "$DEVICE_BRAND" != "xiaomi" && "$DEVICE_BRAND" != "redmi" && "$DEVICE_BRAND" != "poco" ]]; then
   ui_print "! Warning: Non-Xiaomi device detected"
   ui_print "- This module is designed for Xiaomi/Redmi/POCO devices"
   ui_print "- Theoretically it should still work, but keep in mind that unexpected behaviour may occur"
