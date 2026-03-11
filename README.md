@@ -4,16 +4,14 @@ English | [简体中文](/README_zh-CN.md)
 ## Introduction
 A simple module that replaces boot animations with custom ones and works on almost every Xiaomi device. This module is also compatible with tablets since, in contrast to phones, tablets frequently modify their animations according to the orientation of the device.
 
-This module utilizes systemless mount to mount the bootanimation files to the specified location, ensuring no modifications are made to the system partition.
+This module utilizes systemless mount to mount the files, ensuring no modifications are made to the system partition.
 
 ## Requirements
 - Magisk v26.1+ / KernelSU v0.8.0+ / APatch 10568+
 - Android 11+ (API 30+) running MIUI/HyperOS
 
 > [!WARNING]
-> This module is tested on Magisk and KernelSU, while APatch is not fully supported and unexpected bugs may occur.
-> 
-> This module can also work on other phone brands with same file structure, feel free to test it yourself but no support will be provided and functionality is not guaranteed.
+> This module can also work on other root managers with mounting function or phones with similar file structure, feel free to test it yourself but no support will be provided and functionality is not guaranteed.
 
 ## Tested Devices
 
@@ -22,7 +20,7 @@ This module utilizes systemless mount to mount the bootanimation files to the sp
 | liuqin | V14.0.9.0.TMYCNXM | ✅ | Magisk |
 | liuqin | OS2.0.203.0.VMYCNXM | ✅ | Magisk |
 | liuqin | OS2.0.212.0.VMYCNXM | ✅ | Magisk |
-| liuqin | OS3.0.5.0.VMYCNXM | ✅ | Magisk / KSU + mountify |
+| liuqin | OS3.0.5.0.VMYCNXM | ✅ | Magisk / KSU + Any metamodule |
 
 <details>
 <summary>Device Code Reference</summary>
@@ -202,9 +200,10 @@ This module utilizes systemless mount to mount the bootanimation files to the sp
 1. Use the [GitHub Actions workflow](#github-actions-build-your-own-module) to build your custom module
 2. Download the built module from Artifacts
 3. Flash .zip module in the Magisk / KernelSU / APatch app
+4. Reboot
 
 > [!TIP]
-> If you get a blank screen after adding your own animation, it's likely because the ZIP file wasn't compressed right. Use "store-only" mode (no compression) when creating the ZIP.
+> If you get a blank screen after rebooting, it's likely because the ZIP file wasn't compressed correctly. Use "store-only" mode (no compression) when creating the ZIP.
 
 ## Backup and Restore
 
@@ -224,7 +223,7 @@ During the **first installation**, you'll be prompted to backup your current boo
 
 To restore your original boot animation:
 
-1. **Disable or uninstall this module** in Magisk/KernelSU/APatch
+1. **Simply disable or uninstall this module**
 2. **Reboot** your device
 
 > [!NOTE]
