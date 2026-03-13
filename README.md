@@ -202,9 +202,6 @@ This module utilizes systemless mount to mount the files, ensuring no modificati
 3. Flash the downloaded ZIP directly
 4. Reboot
 
-> [!TIP]
-> Flash the downloaded artifact directly - no extraction needed! The workflow creates properly formatted module packages ready to flash.
-
 ## Backup and Restore
 
 During the **first installation**, you'll be prompted to backup your current boot animation. The backup functionality helps you restore the original animations if needed.
