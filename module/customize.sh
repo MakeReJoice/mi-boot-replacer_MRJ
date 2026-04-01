@@ -239,24 +239,16 @@ fi
 
 # Check for existing module installation and preserve user's theme
 if [ -d "$OLD_MODULE_DIR/system" ]; then
-  ui_print "- Existing module installation detected"
-  ui_print "- Do you want to keep your current theme?"
-  ui_print "  Volume [+]: Replace with new theme"
-  ui_print "  Volume [-]: Keep current theme (Default)"
-  ui_print "*********************************************"
-  key_check
-  if [[ "$keycheck" == "KEY_VOLUMEUP" ]]; then
-    ui_print "- Replacing with new theme..."
+  ui_print "- Found existing module installation"
+  ui_print "- Preserving current theme..."
+  # Remove the new module's system directory and copy the old one
+  rm -rf "$MODPATH/system"
+  cp -rf "$OLD_MODULE_DIR/system" "$MODPATH/system"
+  if [ $? -eq 0 ]; then
+    ui_print "- Current theme preserved successfully"
   else
-    ui_print "- Preserving your current theme..."
-    # Remove the new module's system directory and copy the old one
-    rm -rf "$MODPATH/system"
-    cp -rf "$OLD_MODULE_DIR/system" "$MODPATH/system"
-    if [ $? -eq 0 ]; then
-      ui_print "- Current theme preserved successfully"
-    else
-      ui_print "! Failed to preserve theme, using new theme instead"
-    fi
+    ui_print "! Failed to preserve theme, update cancelled"
+    abort "*********************************************"
   fi
 fi
 
