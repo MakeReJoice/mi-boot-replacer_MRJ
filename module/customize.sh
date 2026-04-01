@@ -3,11 +3,13 @@ SKIPUNZIP=0
 # Default boot animation
 BOOT_DIR="/product/media"
 BOOT_DIR_FROM_MODULE=false
-BACKUP_DIR="/data/adb/boot-backups"
+MODULE_BOOT_DIR=""
 MODULE_ID=$(grep_prop id "$MODPATH/module.prop")
 MODULE_NAME=$(grep_prop name "$MODPATH/module.prop")
 MODULE_VER_CODE=$(($(grep_prop versionCode "$MODPATH/module.prop") + 0))
 OLD_MODULE_DIR="/data/adb/modules/$MODULE_ID"
+BACKUP_DIR="/data/adb/boot-backups"
+BACKUP_EXISTS=false
 
 # Recovery not recommended
 if [[ "$BOOTMODE" != true ]]; then
@@ -221,21 +223,20 @@ if [ -d "$OLD_MODULE_DIR/system" ]; then
 fi
 
 # Auto-detect boot animation directory from module structure
-module_boot_dir=""
-
 # Search for bootanimation.zip in module's system directory
 if [ -f "$MODPATH/system/product/media/bootanimation.zip" ]; then
-  module_boot_dir="/product/media"
+  MODULE_BOOT_DIR="/product/media"
 elif [ -f "$MODPATH/system/media/bootanimation.zip" ]; then
-  module_boot_dir="/system/media"
+  MODULE_BOOT_DIR="/system/media"
 elif [ -f "$MODPATH/system_ext/media/bootanimation.zip" ]; then
-  module_boot_dir="/system_ext/media"
+  MODULE_BOOT_DIR="/system_ext/media"
 fi
 
-if [ -n "$module_boot_dir" ]; then
-  # Module has a pre-configured path from build
+if [ -n "$MODULE_BOOT_DIR" ]; then
   BOOT_DIR="$module_boot_dir"
-  BOOT_DIR_FROM_MODULE=true
+  ui_print "- Module has a pre-configured path from build"
+  ui_print "- Path (from module): $BOOT_DIR"
+  ui_print "- Skipping path select user dialog"
 else
   # Fallback, detect from device's existing bootanimation (edge case)
   BOOT_DIR_FROM_MODULE=false
@@ -248,13 +249,7 @@ else
   else
     BOOT_DIR="/product/media"
   fi
-fi
 
-if [ "$BOOT_DIR_FROM_MODULE" = true ]; then
-  ui_print "- Module has a pre-configured path from build"
-  ui_print "- Path (from module): $BOOT_DIR"
-  ui_print "- Skipping path select user dialog"
-else
   ui_print "- Detected path: $BOOT_DIR"
   ui_print "- (May not match actual device path, please verify before proceeding)"
   ui_print "- Do you want to change the path?"
@@ -267,15 +262,15 @@ else
     ui_print "- Using: $BOOT_DIR"
   fi
 fi
+
 ui_print "*********************************************"
 
 # Create backup if not found or empty
-backup_exists=false
 if [ -d "$BACKUP_DIR" ]; then
   # Check if backup directory has bootanimation files
   for file in "$BACKUP_DIR"/bootanimation*; do
     if [ -f "$file" ]; then
-      backup_exists=true
+      BACKUP_EXISTS=true
       break
     fi
   done
