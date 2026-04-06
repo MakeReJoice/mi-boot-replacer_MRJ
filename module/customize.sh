@@ -2,7 +2,6 @@ SKIPUNZIP=0
 
 # Default boot animation
 BOOT_DIR="/product/media"
-BOOT_DIR_FROM_MODULE=false
 MODULE_BOOT_DIR=""
 MODULE_ID=$(grep_prop id "$MODPATH/module.prop")
 MODULE_NAME=$(grep_prop name "$MODPATH/module.prop")
@@ -239,7 +238,6 @@ if [ -n "$MODULE_BOOT_DIR" ]; then
   ui_print "- Skipping path select user dialog"
 else
   # Fallback, detect from device's existing bootanimation (edge case)
-  BOOT_DIR_FROM_MODULE=false
   if [ -f "/product/media/bootanimation.zip" ]; then
     BOOT_DIR="/product/media"
   elif [ -f "/system/media/bootanimation.zip" ]; then
