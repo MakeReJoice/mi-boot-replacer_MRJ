@@ -2,5 +2,4 @@
 
 - Changed existing update behaviour to skip instead of asking the user
 - Finalized the module
-
-This is the **final version**. Future updates will be minimal and limited to bug fixes only.
+- This is the **final version**. Future updates will be minimal and limited to bug fixes only.
